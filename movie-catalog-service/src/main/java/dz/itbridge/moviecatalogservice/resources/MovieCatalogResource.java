@@ -12,11 +12,10 @@ import dz.itbridge.moviecatalogservice.models.CatalogItem;
 @RestController
 @RequestMapping("/catalog")
 public class MovieCatalogResource {
-	
+
 	@RequestMapping("/{userId}")
-	public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
-		return Collections.singletonList(
-				new CatalogItem("Transformer", "Car and truck to human", 4));
+	public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
+		return Collections.singletonList(new CatalogItem("Transformer", "Car and truck to human", 4));
 	}
 
 }

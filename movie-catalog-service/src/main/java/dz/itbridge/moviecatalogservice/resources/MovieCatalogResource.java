@@ -1,6 +1,5 @@
 package dz.itbridge.moviecatalogservice.resources;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import dz.itbridge.moviecatalogservice.models.CatalogItem;
 import dz.itbridge.moviecatalogservice.models.Movie;
-import dz.itbridge.moviecatalogservice.models.Rating;
+import dz.itbridge.moviecatalogservice.models.UserRating;
 
 @RestController
 @RequestMapping("/catalog")
@@ -27,9 +26,9 @@ public class MovieCatalogResource {
 	public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
 
 		// hard-coded watched movies
-		List<Rating> ratings = Arrays.asList(new Rating("1234", 4), new Rating("567", 4));
+		UserRating ratings = restTemplate.getForObject("http://localhost:8083/ratingsdata/users/"+userId, UserRating.class);
 
-		return ratings.stream().map(rating -> {
+		return ratings.getUserRating().stream().map(rating -> {
 			Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
 //			Movie movie = builder.build().get().uri("http://localhost:8082/movies/" + rating.getMovieId()).retrieve().bodyToMono(Movie.class).block();
 			return new CatalogItem(movie.getName(), "Description", rating.getRating());

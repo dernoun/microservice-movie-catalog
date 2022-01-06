@@ -26,10 +26,10 @@ public class MovieCatalogResource {
 	public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
 
 		// hard-coded watched movies
-		UserRating ratings = restTemplate.getForObject("http://localhost:8083/ratingsdata/users/"+userId, UserRating.class);
+		UserRating ratings = restTemplate.getForObject("http://RATING-DATA-SERVICE/ratingsdata/users/"+userId, UserRating.class);
 
 		return ratings.getUserRating().stream().map(rating -> {
-			Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
+			Movie movie = restTemplate.getForObject("http://MOVIE-INFO-SERVICE/movies/" + rating.getMovieId(), Movie.class);
 //			Movie movie = builder.build().get().uri("http://localhost:8082/movies/" + rating.getMovieId()).retrieve().bodyToMono(Movie.class).block();
 			return new CatalogItem(movie.getName(), "Description", rating.getRating());
 		}).collect(Collectors.toList());
